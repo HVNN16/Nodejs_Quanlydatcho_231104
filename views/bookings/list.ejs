@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh sách lịch đặt chỗ</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 36px;
+      color: #333;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    a {
+      text-decoration: none;
+      color: #fff;
+      background-color: #008CBA;
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      display: inline-block;
+      font-size: 18px;
+    }
+    a:hover {
+      background-color: #006f88;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 15px;
+      text-align: center;
+      font-size: 16px;
+    }
+    th {
+      background-color: #333;
+      color: #fff;
+    }
+    td {
+      border-bottom: 1px solid #ddd;
+    }
+    .status {
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    .status.pending {
+      background-color: #f1c40f;
+      color: #fff;
+    }
+    .status.confirmed {
+      background-color: #2ecc71;
+      color: #fff;
+    }
+    .status.cancelled {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .action-buttons button {
+      padding: 8px 16px;
+      border: none;
+      background-color: #007BFF;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .action-buttons button:hover {
+      background-color: #0056b3;
+    }
+    .action-buttons form {
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Danh sách lịch đặt chỗ</h1>
+    <a href="/bookings/new">Đặt chỗ mới</a>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Khách hàng</th>
+          <th>Ngày</th>
+          <th>Giờ</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% bookings.forEach((booking) => { %>
+          <tr>
+            <td><%= booking._id %></td>
+            <td><%= booking.customerName %></td>
+            <td><%= booking.date %></td>
+            <td><%= booking.time %></td>
+            <td>
+              <span class="status 
+                <%= booking.status === 'Pending' ? 'pending' : booking.status === 'Confirmed' ? 'confirmed' : 'cancelled' %>">
+                <%= booking.status %>
+              </span>
+            </td>
+            <td class="action-buttons">
+              <a href="/bookings/<%= booking._id %>/edit" class="edit-btn">Sửa</a>
+              <form action="/bookings/<%= booking._id %>/confirm" method="POST">
+                <button type="submit">Đã giải quyết</button>
+              </form>
+              <form action="/bookings/<%= booking._id %>/cancel" method="POST">
+                <button type="submit">Hủy</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
